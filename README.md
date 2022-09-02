@@ -1,13 +1,31 @@
 # VADIS summarization api
 
+## Requirements
+
+Models will be download from the vadis private org on huggingface platform.
+To run this application, you need to have access to the [org](https://huggingface.co/vadis).
+
 
 ## Installation
 
+### pkgs
 Requires [poetry](https://python-poetry.org/docs/).
 
 ```bash
 poetry install
 ```
+
+### huggingface authentication
+
+Login to the huggingface vadis org by running,
+
+```bash
+huggingface-cli login
+```
+
+it will show prompts asking for your authentication token.
+If you are a member of the org, you should have it [here](https://huggingface.co/settings/tokens).
+
 
 ## Configure
 
