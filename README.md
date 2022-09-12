@@ -44,7 +44,7 @@ poetry shell
 
 Then, start the api, this may take some time for the first time because of model downloading,
 ```bash
-uvicorn main:app
+uvicorn vadis_summarization_api.main:app
 ```
 
 ## Try
