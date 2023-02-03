@@ -12,6 +12,8 @@ python-dotenv = "^0.20.0"
 torch = "^1.11.0"
 transformers = "^4.17.0"
 sienna = "^0.1.5"
+langdetect = "^1.0.9"
+sacremoses = "^0.0.53"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
