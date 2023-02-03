@@ -55,3 +55,7 @@ uvicorn vadis_summarization_api.main:app
 While the app is running by the command above, you can access to the automatically generated documentations where you can actually try out the API.
 Just open the [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 Make sure the app is running.
+
+## Translate German input
+
+If you use `/summarize` end-point (which now only can process one document a time, no batch processing), it first detects the language that the document is written in, the if it's in German, it first translates into English, then summarize in English.
