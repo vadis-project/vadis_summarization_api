@@ -15,18 +15,6 @@ Requires [poetry](https://python-poetry.org/docs/).
 poetry install
 ```
 
-### huggingface authentication
-
-Login to the huggingface vadis org by running,
-
-```bash
-huggingface-cli login
-```
-
-it will show prompts asking for your authentication token.
-If you are a member of the org, you should have it [here](https://huggingface.co/settings/tokens).
-
-
 ## Configure
 
 This API loads configuration from `./.env` file.

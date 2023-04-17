@@ -5,6 +5,8 @@ import langdetect
 from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
+from schnitsum import SchnitSum
+from summarizer.sbert import SBertSummarizer
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from transformers.pipelines import pipeline
 
@@ -17,11 +19,8 @@ class Texts(BaseModel):
 
 
 lang2model_name = {
-    "en": "vadis/bart_scitldr",
-    "ja": "vadis/xscitldr_ja",
-    "zh": "vadis/xscitldr_zh",
-    "it": "vadis/xscitldr_it",
-    "de": "vadis/xscitldr_de",
+    "en": "sobamchan/bart-large-scitldr",
+    "de": "sobamchan/mbart-large-xscitldr-de",
 }
 
 lang2lang_code = {
@@ -38,14 +37,10 @@ class Model:
         print(f"Initializing a model in {tgt_lang}...")
         model_name = lang2model_name[tgt_lang]
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=True)
-        bart = AutoModelForSeq2SeqLM.from_pretrained(model_name, use_auth_token=True)
-
-        if use_gpu:
-            bart = bart.to("cuda")
+        model_name = lang2model_name[tgt_lang]
+        self.schnitsum_model = SchnitSum(model_name, tgt_lang=tgt_lang, use_gpu=use_gpu)
 
         self.use_gpu = use_gpu
-        self.bart = bart
         self.tgt_lang = tgt_lang
         self.model_name = model_name
 
@@ -61,39 +56,10 @@ class Model:
             text = self.translator([text])[0]["translation_text"]
             print(text)
 
-        inputs = self.tokenizer(
-            [text], padding="max_length", truncation=True, return_tensors="pt"
-        )
-        if self.tgt_lang == "en":
-            summary_ids = self.bart.generate(
-                inputs["input_ids"].to("cuda" if self.use_gpu else "cpu"),
-                max_length=250,
-                num_beams=1,
-                early_stopping=True,
-            )
-        else:
-            summary_ids = self.bart.generate(
-                inputs["input_ids"].to("cuda" if self.use_gpu else "cpu"),
-                max_length=250,
-                num_beams=1,
-                early_stopping=True,
-                decoder_start_token_id=self.tokenizer.lang_code_to_id[
-                    lang2lang_code[self.tgt_lang]
-                ],
-            )
-        return self.tokenizer.batch_decode(summary_ids, skip_special_tokens=True)[0]
+        return self.schnitsum_model([text])[0]
 
     def summarize_batch(self, texts: List[str]) -> List[str]:
-        inputs = self.tokenizer(
-            texts, padding="max_length", truncation=True, return_tensors="pt"
-        )
-        summary_ids = self.bart.generate(
-            inputs["input_ids"].to("cuda") if self.use_gpu else inputs["input_ids"],
-            max_length=50,
-            num_beams=1,
-            early_stopping=True,
-        )
-        return self.tokenizer.batch_decode(summary_ids, skip_special_tokens=True)
+        return self.schnitsum_model(texts)
 
 
 model = Model(os.environ.get("LANGUAGE", "en"))
@@ -111,5 +77,16 @@ def summarize_batch(texts: Texts, auth_key: Union[str, None] = Header(default=No
 def summarize(texts: Texts, auth_key: Union[str, None] = Header(default=None)):
     if os.environ["AUTH_KEY"] == auth_key:
         return model.summarize(texts.documents[0])
+    else:
+        return HTTPException(status_code=401, detail="Wrong key.")
+
+
+ext_model = SBertSummarizer("all-distilroberta-v1")
+
+
+@app.post("/ext_summarize")
+def summarize(texts: Texts, auth_key: Union[str, None] = Header(default=None)):
+    if os.environ["AUTH_KEY"] == auth_key:
+        return ext_model(texts.documents[0], num_sentences=3)
     else:
         return HTTPException(status_code=401, detail="Wrong key.")
