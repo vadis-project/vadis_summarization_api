@@ -85,7 +85,7 @@ ext_model = SBertSummarizer("all-distilroberta-v1")
 
 
 @app.post("/ext_summarize")
-def summarize(texts: Texts, auth_key: Union[str, None] = Header(default=None)):
+def ext_summarize(texts: Texts, auth_key: Union[str, None] = Header(default=None)):
     if os.environ["AUTH_KEY"] == auth_key:
         return ext_model(texts.documents[0], num_sentences=3)
     else:
