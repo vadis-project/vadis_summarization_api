@@ -1,11 +1,5 @@
 # VADIS summarization api
 
-## Requirements
-
-Models will be download from the vadis private org on huggingface platform.
-To run this application, you need to have access to the [org](https://huggingface.co/vadis).
-
-
 ## Installation
 
 ### pkgs
