@@ -1,11 +1,17 @@
 # VADIS summarization api
 
-## Installation
+## Requirements
 
-### pkgs
-Requires [poetry](https://python-poetry.org/docs/).
+- Python 3.10
+- [Poetry](https://python-poetry.org/docs/)
+  - A package manager for Python projects
+  - Follow [the official documentation](https://python-poetry.org/docs/#installation) for its installation
+
+## Setup
 
 ```bash
+git clone git@github.com:vadis-project/vadis_summarization_api.git
+cd vadis_summarization_api
 poetry install
 ```
 
