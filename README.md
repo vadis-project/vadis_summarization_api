@@ -22,9 +22,8 @@ There is a sample included in this repository as `./.sample.env`.
 You can start by copying this by `cp ./sample.env ./.env`.
 You can set `AUTH_KEY` to any string.
 
-For `LANGUAGE`, pick one of en, ja, zh, it or de, to change the language for summaries.
-Note that input documents need to be in English in any settings.
-Ff you set `LANGUAGE="de"`, this API will return you summaries in German for the English inputs.
+For `LANGUAGE`, pick one of en or de to change the language for summaries.
+If you set `LANGUAGE="de"`, this API will return you summaries in German even for the English inputs.
 
 ## Run
 

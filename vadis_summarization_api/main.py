@@ -54,7 +54,6 @@ class Model:
             if self.translator is None:
                 self.translator = pipeline(model="facebook/wmt19-de-en")
             text = self.translator([text])[0]["translation_text"]
-            print(text)
 
         return self.schnitsum_model([text])[0]
 
