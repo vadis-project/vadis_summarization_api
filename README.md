@@ -1,7 +1,3 @@
-Sure! Here is the reformatted README for the **VADIS Summarization API** repository, following the template format:
-
----
-
 <!-- PROJECT SHIELDS -->
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
@@ -172,7 +168,3 @@ If you use this API in your research or project, please cite it as follows:
 [license-shield]: https://img.shields.io/github/license/vadis-project/vadis_summarization_api.svg?style=for-the-badge
 [license-url]: https://github.com/vadis-project/vadis_summarization_api/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
-
----
-
-This README format follows the template closely while adapting the information from the current README into a structured and professional format.
